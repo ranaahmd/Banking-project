@@ -2,15 +2,9 @@ import csv
 
 class Bank:
     
-    def add_customer():
-        pass
+    def add_customer(self):
+      pass
     def find_customer():
-        pass
-    def withdraw():
-        pass
-    def deposit(self):
-        pass
-    def transfer():
         pass
     def save_to_csv():
        with open ('data','bank.csv','w') as csv_file:
