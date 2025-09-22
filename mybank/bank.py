@@ -2,13 +2,21 @@ import csv
 import os 
 
 class Bank:
-     
-    def add_customer(self):
-      pass
-    def find_customer(self):
-       pass
-    #    for customer in find_customer:
-    #       if account_type = ''
+    def __init__(self):
+       self.customers() # i want to save all customers here 
+    def add_customer(self,name,customer_id,balance=0):
+      customer = Customer(name, customer_id, balance)
+      self.customers.append(customer)
+      print (f" Customer {name} added with ID {customer.customer_id}")
+      return customer
+    def find_customer(self,customer_id): # it should serch by ID
+       try:
+          for ppl  in customer :
+             if customer_id == customer_id:
+                print('Customer is:',ppl)
+                return ppl
+       except ValueError:
+          raise (' user not found ',ValueError)
     def main():
        bank=Bank()
        is_running = True

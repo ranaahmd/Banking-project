@@ -7,7 +7,7 @@ class Account:
         amount = float(input("Enter amount to be Deposited: "))
         if amount >0:
          self.balance += amount
-        print("\nAmount Deposited:", amount)
+         print("\nAmount Deposited:", amount)
         return amount
     # copied the idea from geektogeeks
     def withdraw(self):
@@ -15,6 +15,7 @@ class Account:
         if self.balance >= amount:
             self.balance -= amount
             print("\nYou Withdrew:", amount)
+            return amount
         else:
             print("\nInsufficient balance")
             return amount
