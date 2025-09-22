@@ -1,6 +1,8 @@
 import unittest
-from mybank import bank
+from mybank.bank import Bank
 class TestBank (unittest.TestCase):
     def test_add_customer(self):
-        self.assertEqual(add_customer, True)
+        self.bank =Bank()
+        customer_id = " "
+        self.assertEqual(add_customer.customer_id," ")
 
