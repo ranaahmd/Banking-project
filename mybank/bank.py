@@ -1,5 +1,7 @@
+import csv 
 
 class Bank:
+    
     def add_customer():
         pass
     def find_customer():
@@ -11,9 +13,11 @@ class Bank:
     def transfer():
         pass
     def save_to_csv():
-        pass
+       with open ('data','bank.csv','w') as csv_file:
+        csv_reader = csv_reader(csv_file)
     def load_from_csv():
-        pass
+       with open ('data','bank.csv','r') as csv_file:
+        csv_reader = csv_reader(csv_file)
         
 
 
