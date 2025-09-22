@@ -18,4 +18,4 @@ class Account:
         else:
             print("\nInsufficient balance")
             return amount
-    # def deactive (self):
+   
