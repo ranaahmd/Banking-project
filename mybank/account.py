@@ -15,7 +15,15 @@ def createaccount():
     names = input (' enter your first name:')
     usernames = input (' enter a username:')
     passwords = input('enter a password:')
-
+    print(' choose account type:')
+    print(' 1-saving account, 2- checking account')
+    choose = input(' enter 1 or 2')
+    if choose == '1':
+        acctype = 'saving'
+    else:
+        acctype = 'checking'
+    customer= Account ={names,usernames,passwords,acctype}
+    customers.append(customer)
 def login():
     usernames = input("Enter your username:")
     passwords = input("Enter your Password:")
@@ -27,7 +35,7 @@ def login():
 while True:
     account_ans = input("choose: 1-Sign Up     2-login    -3quit ")
     if account_ans == "1":
-        register()
+        createaccount()
     if account_ans == "2":
         login()
     if account_ans == "3":
