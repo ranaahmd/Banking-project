@@ -57,7 +57,7 @@ class Account:
     def deposit(self, amount = 0):
         if amount >0:
           self.balance += amount
-          print ('f Deposited {amount} in {self.account_type}')
+          print (f'Deposited {amount} in {self.account_type}')
         else:
             print(' try another amount')
 
@@ -71,6 +71,13 @@ class Account:
         else:
             print("\nInsufficient balance")
             return 0
+    def transfer ( self,amount,other_account): # note for me: i should make it tranfer between acc and to another
+     if self.withdraw(amount):
+        other_account.deposit(amount)
+        print(f"transfer {self.account_type} to {other_account.account_type}")
+        return True
+
+       
     def main():
        bank=Bank()
        bank.load_from_csv()
@@ -99,10 +106,6 @@ class Account:
                    customer.accounts.transfer(amount)
                 elif op == '4':
                    break
-                   
-
-                   
-             
           elif choice =='2':
              name = input('Enter customer name: ')
              cid = input('Enter customer ID: ')
@@ -122,14 +125,10 @@ class Account:
 
 
 
-
-
 # ( THIS IM GONNA WORK ON IT TOMMOROR)
 # if __name__ == "__main__":
 #     main()
-#     def transfer ( self,amount,other):
-#      if self.withdraw(amount):
-#         other.deposit(amount) # rno dont forget to put 'other' in customer class
+# 
        
        # return here after i create login and create account
 
