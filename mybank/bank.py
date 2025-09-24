@@ -4,20 +4,24 @@ import uuid
 class Bank:
     def __init__(self):
        self.customers=[] # i want to save all customers here 
+    def generate_customer_id(self): #copied from conor
+       if not self.customers:
+        return "10001"
+       max_id = max(int(customer.customer_id) for customer in self.customers)
+       return str(max_id + 1) 
 
-    def add_customer(self,name,customer_id,balance=0):
+    def add_customer(self,name,balance=0):
       customer = Customer(name, customer_id, balance)
       self.customers.append(customer)
-      print (f" Customer {name} added with ID {customer.customer_id}")
+      print (f" Customer {name} added with ID {customer_id}")
       return customer
-
-    def find_customer(self,customer_id): # it should serch by ID
-       for ppl  in self.customers :
-          if ppl.customer_id == customer_id:
-             print('Customer is:', ppl.name)
-             return ppl
-       print('Customer not found.')
-       return None
+    def find_customer(self,customer_id): 
+          for customer  in self.customers :
+             if customer.customer_id == customer_id:
+                print('Customer found',customer.name)
+                return customer
+          print('Customer not found.')
+          return None
 
     # FROM CLASS LAB & YOUTUP
     def save_to_csv(self):
@@ -36,17 +40,18 @@ class Bank:
         reader = csv.DictReader(file)
         for row in reader:
            balance = float(row['balance']) if row['balance'] else 0
-           self.add_customer(row['name'], row['customer_id'], balance)
+           customer = Customer(row['name'], row['customer_id'], balance) # i saw this in tiketok!
+           self.customers.append(customer)
+import csv 
 class Customer:
     # copied the idea from stackoverflow
    def __init__(self,name,customer_id,balance=0):
         self.name = name
         self.customer_id = customer_id
         self.balance = balance
-       # i want short id / copied from geekforgeeks
         self.accounts = {
-            'saving': Account('saving',balance,str (uuid.uuid4())[:4]),
-            'checking': Account('checking',0,str (uuid.uuid4())[:4])
+            'saving': Account('saving',balance,customer_id),
+            'checking': Account('checking',0,customer_id)
         }
         
    def transfer_between(self, from_acc, to_acc, amount):
@@ -55,7 +60,7 @@ class Customer:
                 self.accounts[to_acc].deposit(amount)
                 return True
         return False
-
+import csv 
 class Account:
     def __init__(self,account_type,balance,account_number):
         self.account_type =account_type
@@ -96,8 +101,8 @@ def main():
       print('3-Exit')
       choice = input('Enter your chpice(1-3):')
       if choice =='1':
-         cid = input('Enter customer ID: ')
-         customer = bank.find_customer(cid)
+         username = input('Enter customer username: ')
+         customer = bank.find_customer(username)
          if customer:
             while True:
                 print (' 1-Deposit 2-Withdraw 3-Transfer 4-Exit')
@@ -122,9 +127,9 @@ def main():
          bank.save_to_csv()
       elif choice =='2':
          name = input('Enter customer name: ')
-         cid = input('Enter customer ID: ')
+         username = input('Enter customer username: ')
          balance = float(input('Enter initial balance: ') or 0)
-         bank.add_customer(name, cid, balance)
+         bank.add_customer(name, username, balance)
          bank.save_to_csv()
       elif choice=='3':
          is_running= False
