@@ -1,10 +1,3 @@
 name,customer_id,balance
-rana,1234,100.0
-rana,12,2000.0
-sara,12,22.0
-nouf,78,900.0
-sami,78,23.0
-jasmin,cb2829e8-5c74-45a6-bd25-852de5120f83,2000.0
-bushra,fc47dd66-a804-4475-ba30-98b08091857f,1000.0
-sahar,bcf9a18e-60ac-428c-9cc8-81de065291f8,10000.0
-rana,ranaahmed,1000.0
+abrar,,10000.0
+rana,10001,1000.0
