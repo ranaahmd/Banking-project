@@ -142,28 +142,29 @@ def main():
          if customer:
             if customer.password == password:
                 print(' Welcome!', customer.first_name)
-                print (' 1-Deposit 2-Withdraw 3-Transfer 4-Exit')
-                op =input('Choose:')
-                if op == '1':
-                   acc_type = input('Enter account type (saving/checking): ')
-                   try:
-                     amount= float(input('Amount:'))
-                     customer.deposit_account(acc_type, amount) # calling the new function
-                   except ValueError:
-                      print('TRY AGAIN')
-                elif op == '2':
-                   acc_type = input('Enter account type (saving/checking): ')
-                   try:
-                    amount= float(input('Amount:'))
-                    customer.withdraw_from_account(acc_type, amount)
-                   except ValueError:
-                      print("Try again")
-                elif op == '3':
-                   fromacc= input('From account (saving/checking): ')
-                   toacc = input('To account (saving/checking): ')
-                   amount= float(input('Amount:'))
-                   customer.transfer_between(fromacc, toacc, amount)
-                elif op == '4':
+            while True:
+             print (' 1-Deposit 2-Withdraw 3-Transfer 4-Exit')
+             op =input('Choose:')
+             if op == '1':
+              acc_type = input('Enter account type (saving/checking): ')
+              try:
+               amount= float(input('Amount:'))
+               customer.deposit_account(acc_type, amount) # calling the new function
+              except ValueError:
+                print('TRY AGAIN')
+             elif op == '2':
+               acc_type = input('Enter account type (saving/checking): ')
+               try:
+                  amount= float(input('Amount:'))
+                  customer.withdraw_from_account(acc_type, amount)
+               except ValueError:
+                  print("Try again")
+             elif op == '3':
+                fromacc= input('From account (saving/checking): ')
+                toacc = input('To account (saving/checking): ')
+                amount= float(input('Amount:'))
+                customer.transfer_between(fromacc, toacc, amount)
+             elif op == '4':
                    break
          bank.save_to_csv()
       elif choice =='2':
