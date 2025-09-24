@@ -13,17 +13,17 @@ class Bank:
        max_id = max(ids)
        return str(max_id + 1)
 
-    def add_customer(self,name,balance=0,customer_id=None,username=None):
+    def add_customer(self,first_name,last_name,balance_checking,balance_savings,password,customer_id=None):
       if customer_id is None:
           customer_id =self.generate_customer_id()
-      customer = Customer(name,customer_id,balance,username)
+      customer = Customer(first_name,last_name,customer_id,balance_checking,balance_savings,password)
       self.customers.append(customer)
-      print (f" Customer {name} added with ID {customer_id}")
+      print (f" Customer {first_name} added with ID {customer_id}")
       return customer
     def find_customer(self,customer_id): 
           for customer in self.customers :
              if customer.customer_id == customer_id:
-                print('Customer found',customer.name)
+                print('Customer found',customer.first_name)
                 return customer
           print('Customer not found.')
           return None
@@ -32,36 +32,49 @@ class Bank:
     def save_to_csv(self):
       if not self.customers:
           return
-      with open('customers.csv', 'w', newline='') as file:
+      with open('bank.csv', 'w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['name', 'customer_id', 'balance']) 
+        writer.writerow(['customer_id','first_name','last_name','password','balance_checking','balance_savings'])
         for customer in self.customers:
-            writer.writerow([customer.name, customer.customer_id, customer.balance])
+         writer.writerow([
+        customer.customer_id,
+        customer.first_name,
+        customer.last_name,
+        customer.password,
+        customer.accounts['checking'].balance,
+        customer.accounts['saving'].balance
+    ])
 
     def load_from_csv(self):
-       if not os.path.exists('customers.csv'):
+       if not os.path.exists('bank.csv'):
         return
-       with open('customers.csv', 'r') as file:
+       with open('bank.csv', 'r') as file:
         reader = csv.DictReader(file)
         for row in reader:
-           try:
-            balance = float(row['balance']) if row['balance'] else 0
-            customer = Customer(row['name'], row['customer_id'], balance) # i saw this in tiketok!
+            checking = float(row.get('balance_checking', 0)) if row.get('balance_checking') else 0
+            savings = float(row.get('balance_savings', 0)) if row.get('balance_savings') else 0
+            customer = Customer(
+            first_name=row.get('first_name'),
+            last_name=row.get('last_name', ),
+            password= row.get('password'),
+            customer_id=row.get('customer_id'),
+            balance_checking=checking,
+            balance_savings=savings  
+            )
             self.customers.append(customer)
-           except ValueError:
-              print('Error loading customer')
-
 class Customer:
     # copied the idea from stackoverflow
-   def __init__(self,name,customer_id,balance=0,username=None):
-        self.name = name
+   def __init__(self,first_name,last_name,customer_id,balance_checking,balance_savings,password):
+        self.first_name = first_name
+        self.last_name = last_name
         self.customer_id = customer_id
-        self.balance = balance
-        self.username= username
+        self.password= password
+        self.balance_checking = balance_checking
+        self.balance_savings= balance_savings
         self.accounts = {
-            'saving': Account('saving',balance,customer_id),
-            'checking': Account('checking',0,customer_id)
-        }
+           'saving': Account('saving', balance_savings),
+           'checking': Account('checking', balance_checking)
+}
       #IM traying to make the user choose the type of account to deposit
       #copied the idea from stackover flow 
    def deposit_account(self,account_type,amount):
@@ -83,10 +96,10 @@ class Customer:
                 return True
         return False 
 class Account:
-    def __init__(self,account_type,balance,account_number):
-        self.account_type =account_type
-        self.balance =balance 
-        self.account_number= account_number
+
+    def __init__(self,account_type,balance):
+        self.account_type = account_type
+        self.balance = balance
         
     def deposit(self, amount):
         if amount >0:
@@ -124,10 +137,11 @@ def main():
       choice = input('Enter your choice(1-3):')
       if choice =='1':
          customer_id = input('Enter customer ID: ')
+         password = input('enter your password:')
          customer = bank.find_customer(customer_id)
          if customer:
-            while True:
-                print(' Welcome!', customer.name)
+            if customer.password == password:
+                print(' Welcome!', customer.first_name)
                 print (' 1-Deposit 2-Withdraw 3-Transfer 4-Exit')
                 op =input('Choose:')
                 if op == '1':
@@ -153,11 +167,12 @@ def main():
                    break
          bank.save_to_csv()
       elif choice =='2':
-         name = input('Enter customer name: ')
-         username = input('Enter username: ')
+         first_name = input('Enter first_name: ')
+         last_name = input('enter your last name')
+         password= input('enter a password:')
          balance = float(input('Enter initial balance: ') or 0)
-         new_customer= bank.add_customer(name, balance,username=username)
-         print(f"Welcome {new_customer.name}, this is your username: {new_customer.username}, "
+         new_customer = bank.add_customer(first_name, last_name,password, balance, balance)
+         print(f"Welcome {new_customer.first_name} "
       f"and this is your ID: {new_customer.customer_id} with balance {balance}")
          bank.save_to_csv()
       elif choice=='3':
