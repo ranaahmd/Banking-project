@@ -1,6 +1,6 @@
 import csv 
 import os 
-import uuid
+
 class Bank:
     def __init__(self):
        self.customers=[] # i want to save all customers here 
@@ -62,7 +62,20 @@ class Customer:
             'saving': Account('saving',balance,customer_id),
             'checking': Account('checking',0,customer_id)
         }
-        
+      #IM traying to make the user choose the type of account to deposit
+      #copied the idea from stackover flow 
+   def deposit_account(self,account_type,amount):
+       if account_type in self.accounts:
+        return self.accounts[account_type].deposit(amount)
+       else:
+        print(f'Account type "{account_type}" not found')
+        return False
+   def withdraw_from_account(self, account_type, amount):
+        if account_type in self.accounts:
+            return self.accounts[account_type].withdraw(amount)
+        else:
+           print(f'Account type "{account_type}" not found. Available: saving, checking')
+           return False  
    def transfer_between(self, from_acc, to_acc, amount):
         if from_acc in self.accounts and to_acc in self.accounts:
             if self.accounts[from_acc].withdraw(amount):
@@ -78,15 +91,16 @@ class Account:
     def deposit(self, amount):
         if amount >0:
           self.balance += amount
-          print (f'Deposited {amount} in {self.account_type}')
+          print (f'Deposited {amount} in {self.account_type} New balance {self.balance}')
+          return True
         else:
             print(' try another amount')
-
+            return False
     # copied the idea from geektogeeks
     def withdraw(self, amount):
         if self.balance >= amount:
             self.balance -= amount
-            print("\nYou Withdrew:", amount)
+            print("You Withdrew:{amount} ,New balance", {self.balance})
             return True
         else:
             print("\nInsufficient balance")
@@ -118,14 +132,18 @@ def main():
                 op =input('Choose:')
                 if op == '1':
                    acc_type = input('Enter account type (saving/checking): ')
-                   amount= float(input('Amount:'))
-                   if acc_type in customer.accounts:
-                       customer.accounts[acc_type].deposit(amount)
+                   try:
+                     amount= float(input('Amount:'))
+                     customer.deposit_account(acc_type, amount) # calling the new function
+                   except ValueError:
+                      print('TRY AGAIN')
                 elif op == '2':
                    acc_type = input('Enter account type (saving/checking): ')
-                   amount= float(input('Amount:'))
-                   if acc_type in customer.accounts:
-                       customer.accounts[acc_type].withdraw(amount)
+                   try:
+                    amount= float(input('Amount:'))
+                    customer.withdraw_from_account(acc_type, amount)
+                   except ValueError:
+                      print("Try again")
                 elif op == '3':
                    fromacc= input('From account (saving/checking): ')
                    toacc = input('To account (saving/checking): ')
