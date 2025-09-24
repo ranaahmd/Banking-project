@@ -45,16 +45,24 @@ class Customer:
         self.balance = balance
        # i want short id / copied from geekforgeeks
         self.accounts = {
-            'saving': Account('saving',0,str (uuid.uuid4())[:4]),
+            'saving': Account('saving',balance,str (uuid.uuid4())[:4]),
             'checking': Account('checking',0,str (uuid.uuid4())[:4])
-
         }
+        
+   def transfer_between(self, from_acc, to_acc, amount):
+        if from_acc in self.accounts and to_acc in self.accounts:
+            if self.accounts[from_acc].withdraw(amount):
+                self.accounts[to_acc].deposit(amount)
+                return True
+        return False
+
 class Account:
     def __init__(self,account_type,balance,account_number):
         self.account_type =account_type
         self.balance =balance 
         self.account_number= account_number
-    def deposit(self, amount = 0):
+        
+    def deposit(self, amount):
         if amount >0:
           self.balance += amount
           print (f'Deposited {amount} in {self.account_type}')
@@ -62,61 +70,70 @@ class Account:
             print(' try another amount')
 
     # copied the idea from geektogeeks
-    def withdraw(self):
-        amount = float(input("Enter amount to be Withdrawn: "))
+    def withdraw(self, amount):
         if self.balance >= amount:
             self.balance -= amount
             print("\nYou Withdrew:", amount)
-            return amount
+            return True
         else:
             print("\nInsufficient balance")
-            return 0
+            return False
+            
     def transfer ( self,amount,other_account): # note for me: i should make it tranfer between acc and to another
      if self.withdraw(amount):
         other_account.deposit(amount)
         print(f"transfer {self.account_type} to {other_account.account_type}")
         return True
 
-       
-    def main():
-       bank=Bank()
-       bank.load_from_csv()
-       is_running = True
-       while is_running:
-          print(' WELCOME TO BANK!')
-          print('1-Login to Account:')
-          print('2-Create an Account:')
-          print('3-Exit')
-          choice = input('Enter your chpice(1-3):')
-          if choice =='1':
-             cid = input('Enter customer ID: ')
-             bank.find_customer(cid)
-          if customer :
-             while True:
+def main():
+   bank=Bank()
+   bank.load_from_csv()
+   is_running = True
+   while is_running:
+      print(' WELCOME TO BANK!')
+      print('1-Login to Account:')
+      print('2-Create an Account:')
+      print('3-Exit')
+      choice = input('Enter your chpice(1-3):')
+      if choice =='1':
+         cid = input('Enter customer ID: ')
+         customer = bank.find_customer(cid)
+         if customer:
+            while True:
                 print (' 1-Deposit 2-Withdraw 3-Transfer 4-Exit')
                 op =input('Choose:')
                 if op == '1':
-                   amount= input('Amounnt:')
-                   customer.accounts.deposit(amount)
+                   acc_type = input('Enter account type (saving/checking): ')
+                   amount= float(input('Amount:'))
+                   if acc_type in customer.accounts:
+                       customer.accounts[acc_type].deposit(amount)
                 elif op == '2':
-                   amount= input('Amounnt:')
-                   customer.accounts.withdraw(amount)
+                   acc_type = input('Enter account type (saving/checking): ')
+                   amount= float(input('Amount:'))
+                   if acc_type in customer.accounts:
+                       customer.accounts[acc_type].withdraw(amount)
                 elif op == '3':
-                   amount= input('Amounnt:')
-                   customer.accounts.transfer(amount)
+                   fromacc= input('From account (saving/checking): ')
+                   toacc = input('To account (saving/checking): ')
+                   amount= float(input('Amount:'))
+                   customer.transfer_between(fromacc, toacc, amount)
                 elif op == '4':
                    break
-          elif choice =='2':
-             name = input('Enter customer name: ')
-             cid = input('Enter customer ID: ')
-             bank.add_customer(name, cid)
-             bank.save_to_csv()
-          elif choice=='3':
-             is_running= False
-          else:
-             print('That is not valid choice!')
-             print ('Thank you have a nice day!') # when user choice 3 
+         bank.save_to_csv()
+      elif choice =='2':
+         name = input('Enter customer name: ')
+         cid = input('Enter customer ID: ')
+         balance = float(input('Enter initial balance: ') or 0)
+         bank.add_customer(name, cid, balance)
+         bank.save_to_csv()
+      elif choice=='3':
+         is_running= False
+      else:
+         print('That is not valid choice!')
+   print ('Thank you have a nice day!') 
 
+if __name__ == "__main__":
+    main()
 
 
 
@@ -127,7 +144,7 @@ class Account:
 
 # ( THIS IM GONNA WORK ON IT TOMMOROR)
 # if __name__ == "__main__":
-#     main()
+#    main()
 # 
        
        # return here after i create login and create account
