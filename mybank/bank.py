@@ -89,12 +89,23 @@ class Customer:
         else:
            print(f'Account type "{account_type}" not found. Available: saving, checking')
            return False  
-   def transfer_between(self, from_acc, to_acc, amount):
+   def transfer_between_accounts(self, from_acc, to_acc, amount):
         if from_acc in self.accounts and to_acc in self.accounts:
             if self.accounts[from_acc].withdraw(amount):
                 self.accounts[to_acc].deposit(amount)
                 return True
         return False 
+   def transfer_to_external(self, from_acc, other_customer_id, amount, bank):
+        other_customer = bank.find_customer(other_customer_id)
+        if not other_customer:
+            print("other customer not found")
+            return False
+        if from_acc in self.accounts:
+            if self.accounts[from_acc].withdraw(amount):
+                other_customer.accounts['checking'].deposit(amount)
+                print(f"Transferred {amount} to customer {other_customer_id}")
+                return True
+        return False
 class Account:
 
     def __init__(self,account_type,balance):
@@ -119,10 +130,11 @@ class Account:
             print("\nInsufficient balance")
             return False
             
-    def transfer ( self,amount,other_account): # note for me: i should make it tranfer between acc and to another
+    def transfer ( self,amount,other_account): 
+     other_account =input(' enter customer id to transfer to:',customer_id)
      if self.withdraw(amount):
         other_account.deposit(amount)
-        print(f"transfer {self.account_type} to {other_account.account_type}")
+        print(f"transfer {self.account_type} to {other_account.customer_id}")
         return True
 
 def main():
@@ -160,10 +172,16 @@ def main():
                except ValueError:
                   print("Try again")
              elif op == '3':
+                choose_account= input('What account do you want to transfer to? 1-My account ,2-Other account')
+                amount = float(input('Amount:'))
                 fromacc= input('From account (saving/checking): ')
-                toacc = input('To account (saving/checking): ')
-                amount= float(input('Amount:'))
-                customer.transfer_between(fromacc, toacc, amount)
+                if choose_account == '1' :
+                 toacc = input('To account (saving/checking): ')
+                 customer.transfer_between_accounts(fromacc, toacc, amount)
+                elif choose_account == '2':
+                   other_account = input('Enter account_id')
+                   customer.transfer_to_external(fromacc, other_account, amount, bank)
+
              elif op == '4':
                    break
          bank.save_to_csv()
