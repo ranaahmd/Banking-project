@@ -111,7 +111,10 @@ class Account:
     def __init__(self,account_type,balance):
         self.account_type = account_type
         self.balance = balance
-        
+        self.overdraft_limit = -100
+        self.fee = 35
+        self.overdraft_count=0
+        self.account_active=True
     def deposit(self, amount):
         if amount >0:
           self.balance += amount
@@ -124,12 +127,22 @@ class Account:
     def withdraw(self, amount):
         if self.balance >= amount:
             self.balance -= amount
-            print("You Withdrew:{amount} ,New balance", {self.balance})
+            print(f"You Withdrew:{amount} ,New balance", {self.balance})
             return True
         else:
-            print("\nInsufficient balance")
+            print("Insufficient balance Try overdraft:")
+            return self.overdraft_Protection(amount)
+    def overdraft_Protection(self,amount): # copied the idea from stackoverflow
+     if self.account_active:
+         if self.balance + amount > self.overdraft_limit:
+            self.balance -= amount
+            self.balance = self.balance - amount - self.fee # i want to count the fee
+            self.overdraft_count += 1
+            print(f"You Withdrew:{amount} ,New balance", {self.balance})
+            return True
+         if self.overdraft_count >=2:
             return False
-            
+         return True 
     def transfer ( self,amount,other_account): 
      other_account =input(' enter customer id to transfer to:',customer_id)
      if self.withdraw(amount):
@@ -169,8 +182,11 @@ def main():
                acc_type = input('Enter account type (saving/checking): ')
                try:
                   amount= float(input('Amount:'))
-                  customer.withdraw_from_account(acc_type, amount)
-                  bank.save_to_csv()
+                  accounto=customer.accounts[acc_type]
+                  if accounto.overdraft_Protection(amount):
+                        bank.save_to_csv()
+                  else :
+                         print('Try again')
                except ValueError:
                   print("Try again")
              elif op == '3':
