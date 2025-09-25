@@ -162,6 +162,7 @@ def main():
               try:
                amount= float(input('Amount:'))
                customer.deposit_account(acc_type, amount) # calling the new function
+               bank.save_to_csv()
               except ValueError:
                 print('TRY AGAIN')
              elif op == '2':
@@ -169,6 +170,7 @@ def main():
                try:
                   amount= float(input('Amount:'))
                   customer.withdraw_from_account(acc_type, amount)
+                  bank.save_to_csv()
                except ValueError:
                   print("Try again")
              elif op == '3':
@@ -178,9 +180,11 @@ def main():
                 if choose_account == '1' :
                  toacc = input('To account (saving/checking): ')
                  customer.transfer_between_accounts(fromacc, toacc, amount)
+                 bank.save_to_csv()
                 elif choose_account == '2':
                    other_account = input('Enter account_id')
                    customer.transfer_to_external(fromacc, other_account, amount, bank)
+                   bank.save_to_csv()
 
              elif op == '4':
                    break
