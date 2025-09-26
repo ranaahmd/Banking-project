@@ -9,7 +9,7 @@ class Testbank(unittest.TestCase):
         self.assertTrue(customer_id, True)
     def test_add_customer(self):
         bank = Bank()
-        bank.generate_customer_id = Mock(customer= 10008) 
+        bank.generate_customer_id = Mock(return_value=10008) 
         adding = bank.add_customer(
             first_name= 'sahar',
             last_name='mohammed',
@@ -19,3 +19,10 @@ class Testbank(unittest.TestCase):
             balance_savings='900',
         )
         self.assertEqual(adding.customer_id,10008)
+    def test_find_customer(self):
+        bank =Bank()
+        mock_customer = Mock()
+        mock_customer.customer_id = "10009"
+        bank.find_customer= Mock(return_value=mock_customer)
+        testrsult =bank.find_customer(10009)
+        self.assertEqual(testrsult,mock_customer)
