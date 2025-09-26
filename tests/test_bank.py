@@ -22,7 +22,19 @@ class Testbank(unittest.TestCase):
     def test_find_customer(self):
         bank =Bank()
         mock_customer = Mock()
-        mock_customer.customer_id = "10009"
+        mock_customer.customer_id = 10009
         bank.find_customer= Mock(return_value=mock_customer)
         testrsult =bank.find_customer(10009)
         self.assertEqual(testrsult,mock_customer)
+
+        # note for me DONT FORGET TO TEST CSV 
+class TestCustomer(unittest.TestCase):
+    def test_deposit_account(self):
+       account_type = Account("checking",100)
+       account_type.deposit(50)
+       self.assertEqual(account_type.balance,150)
+
+       
+
+
+
