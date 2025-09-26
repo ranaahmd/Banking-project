@@ -53,6 +53,15 @@ class TestCustomer(unittest.TestCase):
         customer.transfer_between_accounts('checking','saving',50)
         self.assertEqual(customer.accounts['checking'].balance,150)
         self.assertEqual(customer.accounts['saving'].balance,250)
+    def test_overdraft_Protection(self):
+        account = Account(account_type =('saving'),balance=100)
+        account.overdraft_limit =-100
+        account.fee= 35
+        account.account_active=True
+        #here im traying to let the user to withdraw small amount
+        amountsmall= account.overdraft_Protection(20)
+        self.assertTrue(amountsmall)
+        self.assertEqual(account.balance,45)
         
 
        

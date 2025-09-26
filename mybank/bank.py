@@ -135,7 +135,6 @@ class Account:
     def overdraft_Protection(self,amount): # copied the idea from stackoverflow
      if self.account_active:
          if self.balance + amount > self.overdraft_limit:
-            self.balance -= amount
             self.balance = self.balance - amount - self.fee # i want to count the fee
             self.overdraft_count += 1
             print(f"You Withdrew:{amount} ,New balance", {self.balance})
