@@ -46,7 +46,14 @@ class TestCustomer(unittest.TestCase):
        account_type = Account("saving",100)
        account_type.withdraw(50)
        self.assertEqual(account_type.balance,50)
-
+    def test_transfer_between_accounts(self):
+        customer = Customer(10007,'Rafa','ahmed',1000.0,1434.0,-135.0)
+        customer.accounts['checking'] = Account('checking',balance=200)
+        customer.accounts['saving'] = Account('saving',balance=200)
+        customer.transfer_between_accounts('checking','saving',50)
+        self.assertEqual(customer.accounts['checking'].balance,150)
+        self.assertEqual(customer.accounts['saving'].balance,250)
+        
 
        
 
