@@ -3,6 +3,7 @@ from mybank.bank import Bank
 from mybank.bank import Customer
 from mybank.bank import Account
 from unittest.mock import Mock
+# credit teach with team in youtup he help me a lot to understand the test
 class Testbank(unittest.TestCase):
     def test_generate_customer_id(self):
         customer_id = (10007,'Rafa')
@@ -27,7 +28,6 @@ class Testbank(unittest.TestCase):
         testrsult =bank.find_customer(10009)
         self.assertEqual(testrsult,mock_customer)
 
-        # note for me DONT FORGET TO TEST CSV 
 class TestCustomer(unittest.TestCase):
     def test_deposit_account_checking(self):
        account_type = Account("checking",100)
@@ -66,11 +66,4 @@ class TestCustomer(unittest.TestCase):
         self.assertTrue(amountsmall2)
         self.assertEqual(account.balance,-135)
         account.account_active=False
-        
-
-        
-
-       
-
-
-
+    

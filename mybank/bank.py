@@ -47,9 +47,10 @@ class Bank:
 
     def load_from_csv(self):
        if not os.path.exists('bank.csv'):
-        return
+        return[]
        with open('bank.csv', 'r') as file:
         reader = csv.DictReader(file)
+      #   rows = list(reader)
         for row in reader:
             checking = float(row.get('balance_checking', 0)) if row.get('balance_checking') else 0
             savings = float(row.get('balance_savings', 0)) if row.get('balance_savings') else 0
@@ -62,6 +63,7 @@ class Bank:
             balance_savings=savings  
             )
             self.customers.append(customer)
+            
 class Customer:
     # copied the idea from stackoverflow
    def __init__(self,first_name,last_name,customer_id,balance_checking,balance_savings,password):
