@@ -42,7 +42,7 @@ class TestCustomer(unittest.TestCase):
        account_type = Account("checking",100)
        account_type.withdraw(50)
        self.assertEqual(account_type.balance,50)
-    def test_deposit_account_saving(self):
+    def test_withdraw_account_saving(self):
        account_type = Account("saving",100)
        account_type.withdraw(50)
        self.assertEqual(account_type.balance,50)
