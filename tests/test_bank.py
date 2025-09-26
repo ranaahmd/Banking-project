@@ -62,6 +62,12 @@ class TestCustomer(unittest.TestCase):
         amountsmall= account.overdraft_Protection(20)
         self.assertTrue(amountsmall)
         self.assertEqual(account.balance,45)
+        amountsmall2= account.overdraft_Protection(145)
+        self.assertTrue(amountsmall2)
+        self.assertEqual(account.balance,-135)
+        account.account_active=False
+        
+
         
 
        
