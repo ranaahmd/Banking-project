@@ -29,10 +29,24 @@ class Testbank(unittest.TestCase):
 
         # note for me DONT FORGET TO TEST CSV 
 class TestCustomer(unittest.TestCase):
-    def test_deposit_account(self):
+    def test_deposit_account_checking(self):
        account_type = Account("checking",100)
        account_type.deposit(50)
        self.assertEqual(account_type.balance,150)
+    def test_deposit_account_saving(self):
+       account_type = Account("saving",100)
+       account_type.deposit(50)
+       self.assertEqual(account_type.balance,150)
+
+    def test_withdraw_from_account_checking(self):
+       account_type = Account("checking",100)
+       account_type.withdraw(50)
+       self.assertEqual(account_type.balance,50)
+    def test_deposit_account_saving(self):
+       account_type = Account("saving",100)
+       account_type.withdraw(50)
+       self.assertEqual(account_type.balance,50)
+
 
        
 
