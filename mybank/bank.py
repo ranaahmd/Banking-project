@@ -135,15 +135,25 @@ class Account:
             print("Insufficient balance Try overdraft:")
             return self.overdraft_Protection(amount)
     def overdraft_Protection(self,amount): # copied the idea from stackoverflow
-     if self.account_active:
-         if self.balance + amount > self.overdraft_limit:
-            self.balance = self.balance - amount - self.fee # i want to count the fee
-            self.overdraft_count += 1
-            print(f"You Withdrew:{amount} ,New balance", {self.balance})
-            return True
-         if self.overdraft_count >=2:
+     if not self.account_active:
+        print('account dactive')
+        return False
+     if self.overdraft_count >=2:
             return False
-         return True 
+     new_balance = self.balance -amount  
+     if new_balance >=0:
+         self.balance = new_balance
+         print(f"You Withdrew:{amount} ,New balance", {self.balance})
+         return True
+     elif new_balance >= self.overdraft_limit:
+            new_balance2 = self.balance - amount - self.fee # i want to count the fee
+            self.balance= new_balance2 
+            self.overdraft_count += 1
+            print(f"You Withdrew:{amount} ,New balance", {new_balance2})
+            return True
+     else:
+        print('you overdraft the limit')
+        return False
     def transfer ( self,amount,other_account): 
      other_account =input(' enter customer id to transfer to:',customer_id)
      if self.withdraw(amount):
@@ -184,7 +194,7 @@ def main():
                try:
                   amount= float(input('Amount:'))
                   accounto=customer.accounts[acc_type]
-                  if accounto.overdraft_Protection(amount):
+                  if accounto.withdraw(amount):
                         bank.save_to_csv()
                   else :
                          print('Try again')

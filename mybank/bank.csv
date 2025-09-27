@@ -5,5 +5,11 @@ customer_id,first_name,last_name,password,balance_checking,balance_savings
 10004,stacey,abrams,DEU8_qu3y72$,2000.0,20000.0
 10005,jake,paul,d^dg23g)@,100000.0,100000.0
 10006,rana,ahmed,1000.0,1434.0,1000.0
-10007,Rafa,ahmed,1000.0,1534.0,-135.0
-10008,saha,mohamed,1000.0,1234,900.0
+10007,Rafa,ahmed,1000.0,1734.0,0.0
+10008,saha,mohamed,1000.0,2234.0,135.0
+10009,nouf,ali,1000.0,4678.0,1500.0
+10010,bushra, mohammed,1000.0,1334.0,-35.0
+10011,basma, ahmed,1000.0,1234.0,1165.0
+10012, taylor, ashly,1000.0,1234.0,1000.0
+10013,ali, ali,1000.0,1234.0,1000.0
+10014,lama,elle,1000.0,23.0,0.0
