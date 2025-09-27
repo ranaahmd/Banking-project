@@ -44,13 +44,12 @@ class Bank:
         customer.accounts['checking'].balance,
         customer.accounts['saving'].balance
     ])
-
+# jana myclass mate help me here to understand
     def load_from_csv(self):
        if not os.path.exists('bank.csv'):
         return[]
        with open('bank.csv', 'r') as file:
         reader = csv.DictReader(file)
-      #   rows = list(reader)
         for row in reader:
             checking = float(row.get('balance_checking', 0)) if row.get('balance_checking') else 0
             savings = float(row.get('balance_savings', 0)) if row.get('balance_savings') else 0
@@ -91,6 +90,7 @@ class Customer:
         else:
            print(f'Account type "{account_type}" not found. Available: saving, checking')
            return False  
+        # i saw this in another lang and got the idea (redidt)
    def transfer_between_accounts(self, from_acc, to_acc, amount):
         if from_acc in self.accounts and to_acc in self.accounts:
             if self.accounts[from_acc].withdraw(amount):
